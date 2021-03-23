@@ -2,15 +2,16 @@
 #####       Imports       #####
 ###############################
 import pygame
+from player import Player
 
 #########################################
 #####       Utility Functions       #####
 #########################################
 def draw():
-    pass
+    sprites.draw(screen)
 
 def logic():
-    pass
+    sprites.update()
 
 #########################################
 ######      Engine Variables        #####
@@ -19,6 +20,18 @@ screen = pygame.display.set_mode((1200, 900))
 pygame.display.set_caption('Umgak Shooter')
 clock = pygame.time.Clock()
 running = True
+sprites = pygame.sprite.Group()
+
+
+################################
+#####       Sprites        #####
+################################
+
+###     Player     ###
+player = Player((255, 0, 0), 50, 50)
+player.rect.x = 200
+player.rect.y = 300
+sprites.add(player)
 
 #################################
 #####       Main Loop       #####
