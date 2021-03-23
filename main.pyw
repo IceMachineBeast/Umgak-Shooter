@@ -5,28 +5,15 @@ pygame.display.set_caption('Grubhub Offical Game')
 white = (255,255,255)
 clock = pygame.time.Clock()
 
-class Shield(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((100,100))
-        self.image.fill((0,0,255))
-        self.rect = self.image.get_rect(center = (screen_width/2,screen_height/2))
-
-    def update(self):
-        self.rect.center = pygame.mouse.get_pos()
-
-    def create_bullet(self):
-        return Bullet(pygame.mouse.get_pos()[0],pygame.mouse.get_pos()[1])
-
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self,pos_x,pos_y):
-        super().__init__()
-        self.image = pygame.Surface((50,10))
-        self.image.fill((255,0,0))
-        self.rect = self.image.get_rect(center =(pos_x,pos_y))
+    def __init__(self,posx,posy):
+        self.rect = pygame.Rect(posx, posy, 10, 10)
 
     def update(self):
-        self.rect.x += 5
+        self.rect.move_ip(5, 0)
+        pygame.draw.rect(screen, (255, 0, 0), self.rect)
+        print("Grubhub")
+
 
 bullet_group = pygame.sprite.Group()
 
@@ -40,6 +27,7 @@ friction = 1
 ground = pygame.Rect(0, 500, 800, 100)
 
 objects = [ground]
+bullets = []
 
 running = True
 while running:
@@ -60,26 +48,29 @@ while running:
     if keys[pygame.K_UP] and player.collidelist(objects) == 0:
         player_speed.y = -20
 
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        bullets.append(Bullet(100, 100))
+
+
     player.move_ip(player_speed)
+
 
     player_speed.y += 1
 
     if player.collidelist(objects) == 0:
         player_speed.y = 0
-        #player.move_ip(0, 0)
 
     if player_speed.x > 0 and player_speed.x != 0:
         player_speed.x -= friction
     elif player_speed.x < 0 and player_speed.x != 0:
         player_speed.x += friction
 
+
     screen.fill(white)
+
+    for x in bullets:
+        x.update()
+
     pygame.draw.rect(screen, (255, 0, 0), player)
     pygame.draw.rect(screen, (0, 255, 0), ground)
     pygame.display.flip()
-
-    bullet_group.draw(screen)
-    bullet_group.update()
-
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        bullet_group.add(Shield.create_bullet())
