@@ -3,6 +3,7 @@
 ###############################
 import pygame
 from player import Player
+from ground import Ground
 
 #########################################
 #####       Utility Functions       #####
@@ -11,9 +12,17 @@ def draw():
     sprites.draw(screen)
 
 def logic():
+    collision_tolarence = 5
+
     sprites.update()
     for x in gravity_sprites:
         x.vely += 1
+
+    for x in grounds:
+        if player.rect.colliderect(x):
+            if abs(player.rect.bottom - x.rect.top) < collision_tolarence:
+                player.vely = 0
+                print("KEK")
 
 #########################################
 ######      Engine Variables        #####
@@ -24,6 +33,7 @@ clock = pygame.time.Clock()
 running = True
 sprites = pygame.sprite.Group()
 gravity_sprites = pygame.sprite.Group()
+grounds = pygame.sprite.Group()
 
 
 ################################
@@ -35,6 +45,13 @@ player = Player((255, 0, 0), 50, 50)
 player.rect.x = 200
 player.rect.y = 300
 sprites.add(player)
+
+###     Ground     ###
+ground = Ground((0, 255, 0), 1200, 100)
+ground.rect.x = 0
+ground.rect.y = 800
+sprites.add(ground)
+grounds.add(ground)
 
 #######################################
 #####       Initialization       ######
