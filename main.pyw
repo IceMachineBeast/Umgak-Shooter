@@ -12,6 +12,8 @@ def draw():
 
 def logic():
     sprites.update()
+    for x in gravity_sprites:
+        x.vely += 1
 
 #########################################
 ######      Engine Variables        #####
@@ -21,6 +23,7 @@ pygame.display.set_caption('Umgak Shooter')
 clock = pygame.time.Clock()
 running = True
 sprites = pygame.sprite.Group()
+gravity_sprites = pygame.sprite.Group()
 
 
 ################################
@@ -32,6 +35,14 @@ player = Player((255, 0, 0), 50, 50)
 player.rect.x = 200
 player.rect.y = 300
 sprites.add(player)
+
+#######################################
+#####       Initialization       ######
+#######################################
+
+for x in sprites:
+    if x.gravity == True:
+        gravity_sprites.add(x)
 
 #################################
 #####       Main Loop       #####

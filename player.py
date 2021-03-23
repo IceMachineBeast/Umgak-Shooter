@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         # Variables
         self.velx = 0
         self.vely = 0
+        self.gravity = True
 
         # Draw the car (a rectangle!)
         pygame.draw.rect(self.image, color, [0, 0, width, height])
