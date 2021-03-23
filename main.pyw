@@ -12,11 +12,6 @@ def draw():
 def logic():
     pass
 
-def events():
-    for event in pygame.event.get():    # This will deal with all of the events such as keypresses.
-        if event.type == pygame.QUIT:
-            running = False
-
 #########################################
 ######      Engine Variables        #####
 #########################################
@@ -32,7 +27,14 @@ while running:
     clock.tick(60)  # The fps is locked at 60!
     screen.fill((255,255,255))  # Erase everything of the screen.
 
-    events()
+    #########################################
+    #####       Handeling Events        #####
+    #########################################
+
+    for event in pygame.event.get():    # This will deal with all of the events such as keypresses.
+        if event.type == pygame.QUIT:
+            running = False
+
     logic()
     draw()
 
