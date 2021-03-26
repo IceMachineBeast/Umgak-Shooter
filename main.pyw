@@ -11,17 +11,36 @@ def draw():
     sprites.draw(screen)
 
 def logic():
-    collision_tolarence = 5
 
+    # Update all sprites.
     sprites.update()
-    for x in gravity_sprites:
-        x.vely += 1
 
-    for x in grounds:
-        if player.rect.colliderect(x.rect):
-            if abs(player.rect.bottom - x.rect.top) < collision_tolarence:
-                player.vely = 0
-                print("KEK")
+    # Apply gravity to those sprites that need it.
+    for x in sprites:
+        if x.gravity == True:
+            x.vely += 1
+
+    # Check collision for player.
+    if abs(ground.rect.top - player.rect.bottom) < 5:
+        player.vely = 0
+
+    # Getting user input.
+    keys = pygame.key.get_pressed()
+
+    # Using user inputs.
+    if keys[pygame.K_LEFT] and player.velx > -15:
+        player.velx -= 2
+    if keys[pygame.K_RIGHT] and player.velx < 15:
+        player.velx += 2
+    if keys[pygame.K_UP] and abs(ground.rect.top - player.rect.bottom) < 5:
+        player.vely -= 20
+
+    # Applying friction
+    if player.velx > 0:
+        player.velx -= 1
+    elif player.velx < 0:
+        player.velx += 1
+
 
 #########################################
 ######      Engine Variables        #####
@@ -31,7 +50,6 @@ pygame.display.set_caption('Umgak Shooter')
 clock = pygame.time.Clock()
 running = True
 sprites = pygame.sprite.Group()
-gravity_sprites = pygame.sprite.Group()
 grounds = pygame.sprite.Group()
 
 
@@ -42,7 +60,7 @@ grounds = pygame.sprite.Group()
 ###     Player     ###
 player = Entity((255, 0, 0), 50, 50)
 player.rect.x = 200
-player.rect.y = 300
+player.rect.y = 600
 sprites.add(player)
 
 ###     Ground     ###
@@ -57,9 +75,7 @@ grounds.add(ground)
 #####       Initialization       ######
 #######################################
 
-for x in sprites:
-    if x.gravity == True:
-        gravity_sprites.add(x)
+# Nothing here yet.
 
 #################################
 #####       Main Loop       #####
