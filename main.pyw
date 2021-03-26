@@ -2,8 +2,7 @@
 #####       Imports       #####
 ###############################
 import pygame
-from player import Player
-from ground import Ground
+from entity import Entity
 
 #########################################
 #####       Utility Functions       #####
@@ -19,7 +18,7 @@ def logic():
         x.vely += 1
 
     for x in grounds:
-        if player.rect.colliderect(x):
+        if player.rect.colliderect(x.rect):
             if abs(player.rect.bottom - x.rect.top) < collision_tolarence:
                 player.vely = 0
                 print("KEK")
@@ -41,15 +40,16 @@ grounds = pygame.sprite.Group()
 ################################
 
 ###     Player     ###
-player = Player((255, 0, 0), 50, 50)
+player = Entity((255, 0, 0), 50, 50)
 player.rect.x = 200
 player.rect.y = 300
 sprites.add(player)
 
 ###     Ground     ###
-ground = Ground((0, 255, 0), 1200, 100)
+ground = Entity((0, 255, 0), 1200, 100)
 ground.rect.x = 0
 ground.rect.y = 800
+ground.gravity = False
 sprites.add(ground)
 grounds.add(ground)
 
