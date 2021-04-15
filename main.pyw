@@ -108,3 +108,4 @@ while running:
     draw()
 
     pygame.display.flip()   # Updates the screen
+#woah mate you did some coding. Sorry for not being active but you good with monday?
